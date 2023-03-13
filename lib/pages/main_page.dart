@@ -8,9 +8,12 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: DrawerMain(),
-      body: ProgressInd(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        drawer: DrawerMain(),
+        body: ProgressInd(),
+      ),
     );
   }
 }
