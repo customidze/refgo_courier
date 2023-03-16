@@ -28,6 +28,13 @@ class DrawerMain extends StatelessWidget {
               Navigator.pushNamed(context, '/ibox');
             },
           ),
+           ListTile(
+            title: const Text('Обслуживание БД'),
+            trailing: const Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.pushNamed(context, '/db');
+            },
+          ),
         ],
       ),
     );

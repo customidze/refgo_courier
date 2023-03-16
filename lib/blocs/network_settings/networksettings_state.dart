@@ -1,6 +1,30 @@
 part of 'networksettings_bloc.dart';
 
 @immutable
-abstract class NetworksettingsState {}
+abstract class NetworkSettingsState {
+  Map networkSettings = {};
+}
 
-class NetworksettingsInitial extends NetworksettingsState {}
+class NetworkSettingsInitial extends NetworkSettingsState {
+  
+  @override
+  Map networkSettings = {};
+  
+   
+   getAsync()async{
+    
+    networkSettings =  await getSaveNetworkSettings({});
+  //   //add(GetNetworkSettingsEvent(networkSettings: networkSettings));
+  
+     }
+  
+}
+
+
+class GetNetworkSettingsState extends NetworkSettingsState{
+
+  @override
+  Map networkSettings;
+
+  GetNetworkSettingsState({required this.networkSettings});
+}

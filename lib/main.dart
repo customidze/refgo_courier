@@ -3,18 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:refgo_courier/blocs/ibox_settings/ibox_settings_bloc.dart';
 import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 import 'package:refgo_courier/blocs/network_settings/networksettings_bloc.dart';
+import 'package:refgo_courier/blocs/service_db/service_db_bloc.dart';
 import 'package:refgo_courier/pages/ibox_settings_page.dart';
 import 'package:refgo_courier/pages/main_page.dart';
 import 'package:refgo_courier/pages/network_settings_page.dart';
 import 'package:refgo_courier/pages/order_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:refgo_courier/pages/service_db_page.dart';
+//import 'package:hive/hive.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
- 
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -26,25 +32,27 @@ class MyApp extends StatelessWidget {
           create: (context) => MainPageBloc(),
         ),
         BlocProvider(
-          create: (context) => NetworksettingsBloc(),
+          create: (context) => NetworkSettingsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ServiceDbBloc(),
         ),
       ],
       child: MaterialApp(
         title: 'RefGo courier',
         theme: ThemeData(
-        
           primarySwatch: Colors.blue,
         ),
         //home: MainPage(),
         initialRoute: '/',
         routes: {
-            '/': (BuildContext context) => MainPage(),
-            '/network': (BuildContext context) => NetworkSettingsPage(),
-            '/ibox': (BuildContext context) => IboxSettingsPage(),
-            '/order': (BuildContext context) => OrderPage(),
-          },
+          '/': (BuildContext context) => MainPage(),
+          '/network': (BuildContext context) => NetworkSettingsPage(),
+          '/ibox': (BuildContext context) => IboxSettingsPage(),
+          '/db': (BuildContext context) => ServiceDbPage(),
+          '/order': (BuildContext context) => OrderPage(),
+        },
       ),
     );
   }
 }
-
