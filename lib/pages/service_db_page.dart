@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:refgo_courier/blocs/network_settings/networksettings_bloc.dart';
 import 'package:refgo_courier/blocs/service_db/service_db_bloc.dart';
