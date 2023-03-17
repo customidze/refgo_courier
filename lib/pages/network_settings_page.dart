@@ -20,11 +20,12 @@ class NetworkSettingsPage extends StatelessWidget {
           ctrlAddrServer.text = networkSettings['ctrlAddrServer'];
           ctrlUserName.text = networkSettings['ctrlUserName'];
           ctrlPasswd.text = networkSettings['ctrlPasswd'];
-        } else if (state.networkSettings.isNotEmpty) {
-          ctrlAddrServer.text = state.networkSettings['ctrlAddrServer'];
-          ctrlUserName.text = state.networkSettings['ctrlUserName'];
-          ctrlPasswd.text = state.networkSettings['ctrlPasswd'];
         }
+        //  else if (state.networkSettings.isNotEmpty) {
+        //   ctrlAddrServer.text = state.networkSettings['ctrlAddrServer'];
+        //   ctrlUserName.text = state.networkSettings['ctrlUserName'];
+        //   ctrlPasswd.text = state.networkSettings['ctrlPasswd'];
+        // }
         return Scaffold(
           appBar: AppBar(
             title: const Text('Сетевые настройки'),
@@ -140,6 +141,7 @@ class NetworkSettingsPage extends StatelessWidget {
                               context: context,
                               builder: (BuildContext context) {
                                 return const AlertDialog(
+                                  
                                   title: Text('Заполните все поля!!!'),
                                 );
                               });

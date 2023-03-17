@@ -9,8 +9,7 @@ class NetworkSettingsBloc
     extends Bloc<NetworkSettingsEvent, NetworkSettingsState> {
   Map? networkSettings;
 
-  NetworkSettingsBloc() : super(
-    NetworkSettingsInitial()) {
+  NetworkSettingsBloc() : super(NetworkSettingsInitial()) {
     getAsync();
     on<NetworkSettingsEvent>((event, emit) {
       //getAsync();
@@ -30,6 +29,8 @@ class NetworkSettingsBloc
 
   getAsync() async {
     networkSettings = await getSaveNetworkSettings({});
-    add(GetNetworkSettingsEvent(networkSettings: networkSettings));
+    if (networkSettings != null) {
+      add(GetNetworkSettingsEvent(networkSettings: networkSettings));
+    }
   }
 }

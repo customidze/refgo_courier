@@ -2,13 +2,13 @@ part of 'networksettings_bloc.dart';
 
 @immutable
 abstract class NetworkSettingsState {
-  Map networkSettings = {};
+  Map? networkSettings;
 }
 
 class NetworkSettingsInitial extends NetworkSettingsState {
   
   @override
-  Map networkSettings = {};
+  Map? networkSettings;
   
    
    getAsync()async{
@@ -24,7 +24,7 @@ class NetworkSettingsInitial extends NetworkSettingsState {
 class GetNetworkSettingsState extends NetworkSettingsState{
 
   @override
-  Map networkSettings;
+  Map? networkSettings;
 
   GetNetworkSettingsState({required this.networkSettings});
 }
