@@ -4,3 +4,5 @@ part of 'main_page_bloc.dart';
 abstract class MainPageEvent {}
 
 class GetOrdersEvent extends MainPageEvent {}
+
+class OnWillPopEvent extends MainPageEvent{}

@@ -9,26 +9,121 @@ class GetOrdersState extends MainPageState {
   List<Order> listOrder = [
     Order(
         uid: '1234f',
-        nimber: '1',
+        nimber: 'НФНФ-42342344',
         address: 'Видное, Ольховая 2',
-        status: Status.inway),
+        status: Status.inway,
+        lat: 54.926934,
+        long: 37.392463),
     Order(
         uid: '1234g',
-        nimber: '2',
+        nimber: 'НФНФ-42342345',
         address:
             '142703, Россия, Московская область, Видное, Советский проезд д. 3',
-        status: Status.delivered)
+        status: Status.delivered,
+        lat: 54.924908,
+        long: 37.402234),
+    Order(
+        uid: '1234f',
+        nimber: 'НФНФ-42342344',
+        address: 'Видное, Ольховая 2',
+        status: Status.inway,
+        lat: 54.913297,
+        long: 37.415733),
+    Order(
+        uid: '1234g',
+        nimber: 'НФНФ-42342345',
+        address: 'Корстон',
+        status: Status.delivered,
+        lat: 54.918405,
+        long: 37.427263),
+    Order(
+        uid: '1234f',
+        nimber: 'НФНФ-42342344',
+        address: 'россельхоз банк',
+        status: Status.inway,
+        lat: 54.919761,
+        long: 37.436876),
+    Order(
+        uid: '1234g',
+        nimber: 'НФНФ-42342345',
+        address:
+            '142703, Россия, Московская область, Видное, Советский проезд д. 3',
+        status: Status.delivered,
+        lat:55.641658, 
+        long:37.619584),
+    // Order(
+    //     uid: '1234f',
+    //     nimber: 'НФНФ-42342344',
+    //     address: 'Видное, Ольховая 2',
+    //     status: Status.inway),
+    // Order(
+    //     uid: '1234g',
+    //     nimber: 'НФНФ-42342345',
+    //     address:
+    //         '142703, Россия, Московская область, Видное, Советский проезд д. 3',
+    //     status: Status.delivered),
+    // Order(
+    //     uid: '1234f',
+    //     nimber: 'НФНФ-42342344',
+    //     address: 'Видное, Ольховая 2',
+    //     status: Status.inway),
+    // Order(
+    //     uid: '1234g',
+    //     nimber: 'НФНФ-42342345',
+    //     address:
+    //         '142703, Россия, Московская область, Видное, Советский проезд д. 3',
+    //     status: Status.delivered),
+    // Order(
+    //     uid: '1234f',
+    //     nimber: 'НФНФ-42342344',
+    //     address: 'Видное, Ольховая 2',
+    //     status: Status.inway),
+    // Order(
+    //     uid: '1234g',
+    //     nimber: 'НФНФ-42342345',
+    //     address:
+    //         '142703, Россия, Московская область, Видное, Советский проезд д. 3',
+    //     status: Status.delivered),
+    // Order(
+    //     uid: '1234f',
+    //     nimber: 'НФНФ-42342344',
+    //     address: 'Видное, Ольховая 2',
+    //     status: Status.inway),
+    // Order(
+    //     uid: '1234g',
+    //     nimber: 'НФНФ-42342345',
+    //     address:
+    //         '142703, Россия, Московская область, Видное, Советский проезд д. 3',
+    //     status: Status.delivered),
+    // Order(
+    //     uid: '1234f',
+    //     nimber: 'НФНФ-42342344',
+    //     address: 'Видное, Ольховая 2',
+    //     status: Status.inway),
+    // Order(
+    //     uid: '1234g',
+    //     nimber: 'НФНФ-42342345',
+    //     address:
+    //         '142703, Россия, Московская область, Видное, Советский проезд д. 3',
+    //     status: Status.delivered)
   ];
 }
+
+class OnWillPopState extends MainPageState{}
 
 class Order {
   String uid;
   String nimber;
   String address;
   Status status;
+  double lat;
+  double long;
+  //String cost;
   Order(
       {required this.uid,
       required this.nimber,
       required this.address,
-      required this.status});
+      required this.status,
+      required this.lat,
+      required this.long});
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:refgo_courier/blocs/network_settings/networksettings_bloc.dart';
+import 'package:refgo_courier/domain/http_request.dart';
 
 class NetworkSettingsPage extends StatelessWidget {
   NetworkSettingsPage({Key? key}) : super(key: key);
   final ctrlAddrServer = TextEditingController();
   final ctrlUserName = TextEditingController();
   final ctrlPasswd = TextEditingController();
+  final ctrlId = TextEditingController();
 
   //var _bloc = BlocProvider.of<NetworksettingsBloc>(context).;
 
@@ -20,6 +22,7 @@ class NetworkSettingsPage extends StatelessWidget {
           ctrlAddrServer.text = networkSettings['ctrlAddrServer'];
           ctrlUserName.text = networkSettings['ctrlUserName'];
           ctrlPasswd.text = networkSettings['ctrlPasswd'];
+          ctrlId.text = networkSettings['ctrlId'];
         }
         //  else if (state.networkSettings.isNotEmpty) {
         //   ctrlAddrServer.text = state.networkSettings['ctrlAddrServer'];
@@ -52,7 +55,7 @@ class NetworkSettingsPage extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
-                    hintText: 'https://example.com',
+                    hintText: 'example.com',
                     labelText: 'Адрес сервера',
                   ),
                 ),
@@ -90,6 +93,25 @@ class NetworkSettingsPage extends StatelessWidget {
                     labelText: 'Пароль',
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: TextFormField(
+                    //obscureText: true,
+                    //initialValue: 'sc1or6',
+                    controller: ctrlId,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: const BorderSide(
+                          color: Colors.red,
+                          width: 1.5,
+                        ),
+                      ),
+                      hintText: 'MobKas01',
+                      labelText: 'Введите идентификатор базы',
+                    ),
+                  ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -98,7 +120,8 @@ class NetworkSettingsPage extends StatelessWidget {
                       onPressed: () async {
                         if (ctrlAddrServer.text == '' ||
                             ctrlUserName.text == '' ||
-                            ctrlPasswd.text == '') {
+                            ctrlPasswd.text == '' ||
+                            ctrlId.text == '') {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -107,7 +130,14 @@ class NetworkSettingsPage extends StatelessWidget {
                                 );
                               });
                           return;
-                        } else {}
+                        } else {
+                          var result = await getTestConn({
+                            'addrServer': ctrlAddrServer.text,
+                            'userName': ctrlUserName.text,
+                            'passwd': ctrlPasswd.text,
+                            'id': ctrlId.text
+                          });
+                        }
 
                         // if (res == 'ok') {
                         //   showDialog(
@@ -136,12 +166,12 @@ class NetworkSettingsPage extends StatelessWidget {
                       onPressed: () {
                         if (ctrlAddrServer.text == '' ||
                             ctrlUserName.text == '' ||
-                            ctrlPasswd.text == '') {
+                            ctrlPasswd.text == ''||
+                            ctrlId.text == '') {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return const AlertDialog(
-                                  
                                   title: Text('Заполните все поля!!!'),
                                 );
                               });
@@ -151,7 +181,8 @@ class NetworkSettingsPage extends StatelessWidget {
                               .add(SaveNetworkSettingsEvent(networkSettings: {
                             'ctrlAddrServer': ctrlAddrServer.text,
                             'ctrlUserName': ctrlUserName.text,
-                            'ctrlPasswd': ctrlPasswd.text
+                            'ctrlPasswd': ctrlPasswd.text,
+                            'ctrlId': ctrlId.text
                           }));
                         }
                       },

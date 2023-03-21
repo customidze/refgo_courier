@@ -16,6 +16,13 @@ class _ProgressIndState extends State<ProgressInd>
       List<double>.generate(2, (index) => index * 0.1 - 0);
 
   @override
+  void dispose() {
+    
+    controller?.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
