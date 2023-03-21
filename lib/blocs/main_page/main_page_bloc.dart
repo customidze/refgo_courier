@@ -10,15 +10,19 @@ part 'main_page_state.dart';
 class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
   List<Order>? listOrder;
   DateTime dt = DateTime.now();
-  Map? dataForConn = _getDataForConn();
+  Map? dataForConn;
   
 
   MainPageBloc() : super(MainPageInitial()) {
+
+    _getDataForConn().then((value) async{
+      dataForConn = value;
+    });
     // on<MainPageEvent>((event, emit) {
     //   // TODO: implement event handler
     // });
-    on<GetOrdersEvent>((event, emit) {
-      var result = _getOrdersFromServer(dt);
+    on<GetOrdersEvent>((event, emit) async{
+      var result = await _getOrdersFromServer(dt,dataForConn);
       emit(GetOrdersState());
     });
     on((event, emit) {
@@ -26,11 +30,11 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
     });
   }
 
-  _getOrdersFromServer(date){
-    //var result = getOrders(dataForConn);
+  _getOrdersFromServer(date, dataForConn){
+    var result = getOrders(dataForConn);
   }
 
-  _getDataForConn()async{
+  Future _getDataForConn()async{
     dataForConn = await getSaveNetworkSettings({});
     return dataForConn;
   }

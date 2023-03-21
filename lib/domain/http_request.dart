@@ -33,10 +33,10 @@ Future<String> getTestConn(Map dataForConn) async {
 
 Future<String> getOrders(Map dataForConn) async {
   //Map dataForConn = await getSettingFromDB();
-  String addrServer = dataForConn['addrServer'];
-  String userName = dataForConn['userName'];
-  String passwd = dataForConn['passwd'];
-  String id = dataForConn['id'];
+  String addrServer = dataForConn['ctrlAddrServer'];
+  String userName = dataForConn['ctrlUserName'];
+  String passwd = dataForConn['ctrlPasswd'];
+  String id = dataForConn['ctrlId'];
 
   String result = '';
   String basicAuth = 'Basic ' + base64Encode(utf8.encode('$userName:$passwd'));
