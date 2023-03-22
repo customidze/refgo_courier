@@ -1,5 +1,8 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 
 Future<String> getTestConn(Map dataForConn) async {
   //Map dataForConn = await getSettingFromDB();
@@ -31,7 +34,7 @@ Future<String> getTestConn(Map dataForConn) async {
   return result;
 }
 
-Future<String> getOrders(Map dataForConn) async {
+Future getOrders(Map dataForConn,context) async {
   //Map dataForConn = await getSettingFromDB();
   String addrServer = dataForConn['ctrlAddrServer'];
   String userName = dataForConn['ctrlUserName'];
@@ -51,6 +54,7 @@ Future<String> getOrders(Map dataForConn) async {
 
     if (response.statusCode == 200) {
       //saveSettingsInBD(addrServer, userName, passwd);
+      BlocProvider.of<MainPageBloc>(context).add(GetOrdersEvent());
       print(utf8.decode(response.bodyBytes));
       result = response.statusCode.toString();
     } else {
@@ -58,5 +62,5 @@ Future<String> getOrders(Map dataForConn) async {
     }
   });
 
-  return result;
+  //return result;
 }
