@@ -18,8 +18,7 @@ class OrderItemWidget extends StatelessWidget {
       required this.number,
       required this.address,
       required this.status,
-      required this.order
-      });
+      required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class OrderItemWidget extends StatelessWidget {
       onTap: () {
         BlocProvider.of<OrderPageBloc>(context).number = number;
         BlocProvider.of<OrderPageBloc>(context).order = order;
-        Navigator.pushNamed(context, '/order',arguments: order);
+        Navigator.pushNamed(context, '/order', arguments: order);
       },
       child: Container(
         decoration: const BoxDecoration(

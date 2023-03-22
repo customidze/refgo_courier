@@ -166,7 +166,7 @@ class NetworkSettingsPage extends StatelessWidget {
                       onPressed: () {
                         if (ctrlAddrServer.text == '' ||
                             ctrlUserName.text == '' ||
-                            ctrlPasswd.text == ''||
+                            ctrlPasswd.text == '' ||
                             ctrlId.text == '') {
                           showDialog(
                               context: context,
