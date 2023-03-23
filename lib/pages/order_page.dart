@@ -73,7 +73,7 @@ class OrderPage extends StatelessWidget {
                         Status newstatus = Status.values.byName(value!);
                         BlocProvider.of<OrderPageBloc>(context).add(SetStatusEvent(status: newstatus));
                         
-                        selectedValue = value as String;
+                        selectedValue = value;
                       },
                     ));
                   },
@@ -82,6 +82,7 @@ class OrderPage extends StatelessWidget {
             )
           ],
         ),
+        bottomNavigationBar: Container(color: Colors.green, height: MediaQuery.of(context).size.height * 0.1,),
       ),
     );
   }
