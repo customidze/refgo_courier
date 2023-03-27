@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
-import 'package:refgo_courier/enums.dart';
+import 'package:refgo_courier/domain/order.dart';
+
 
 part 'order_page_event.dart';
 part 'order_page_state.dart';

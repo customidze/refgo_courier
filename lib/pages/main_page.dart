@@ -9,6 +9,7 @@ class MainPage extends StatelessWidget {
   MainPage({super.key});
 
   List? markers;
+  DateTime dt = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,55 @@ class MainPage extends StatelessWidget {
         },
         child: Scaffold(
           appBar: AppBar(
+            centerTitle: true,
+            title: GestureDetector(
+              onTap: () {
+                showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(DateTime.now().year - 1),
+                        lastDate: DateTime.now())
+                    .then((pickedDate) {
+                  if (pickedDate == null) {
+                    return;
+                  } else {
+                    dt = pickedDate;
+                    BlocProvider.of<MainPageBloc>(context).add(SetDateEvent(
+                        date: pickedDate ));
+                  }
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    //color: Colors.blueGrey,
+                    border: Border.all(color: Colors.white),
+                    borderRadius: const BorderRadius.all(Radius.circular(15))),
+                height: 30,
+                width: 120,
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  BlocBuilder<MainPageBloc, MainPageState>(
+                    buildWhen: (previous, current) =>
+                        current is SetDateState ? true : false,
+                    builder: (context, state) {
+                      return Text(
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                          '${dt.day.toString()}-${dt.month.toString()}-${dt.year.toString()}');
+                    },
+                  ),
+                  const Icon(
+                    Icons.calendar_month,
+                    color: Colors.white,
+                  )
+                ]),
+              ),
+            ),
             actions: [
               IconButton(
                   onPressed: () {
                     BlocProvider.of<MainPageBloc>(context)
-                        .add(RequestOrdersEvent());
+                        .add(RequestOrdersEvent(dt: dt));
                   },
                   icon: const Icon(Icons.download))
             ],
@@ -37,12 +82,20 @@ class MainPage extends StatelessWidget {
           drawer: const DrawerMain(),
           //body: const ProgressInd(),
           body: BlocBuilder<MainPageBloc, MainPageState>(
-            buildWhen: (previous, current) =>
-                current is GetOrdersState || current is OnWillPopState || current is WaitState
-                    ? true
-                    : false,
+            buildWhen: (previous, current) => current is GetOrdersState ||
+                    current is OnWillPopState ||
+                    current is WaitState
+                ? true
+                : false,
             builder: (context, state) {
               if (state is GetOrdersState || state is OnWillPopState) {
+                if(state.listOrder.isEmpty){
+                  const Center(
+                  child: SizedBox(
+                    child: Text('Нет заказов...'),
+                  ),
+                );
+                }
                 markers = List.generate(
                     state.listOrder.length,
                     (index) => {
@@ -66,11 +119,9 @@ class MainPage extends StatelessWidget {
                     }).toList(),
                   ),
                 );
-              } 
-              else if(state is WaitState){
+              } else if (state is WaitState) {
                 return const ProgressInd();
-              }
-              else {
+              } else {
                 return const Center(
                   child: SizedBox(
                     child: Text('Нет заказов...'),
@@ -136,4 +187,11 @@ class MainPage extends StatelessWidget {
       ),
     );
   }
+  // Future<void> _showDatePicker()async{
+  //   final DateTime picked=await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
+  //   if(picked != null)
+  //   {
+  //   //print(DateFormat("yyyy-MM-dd").format(picked));
+  //   }
+  // }
 }

@@ -5,6 +5,7 @@ import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 import 'package:refgo_courier/blocs/network_settings/networksettings_bloc.dart';
 import 'package:refgo_courier/blocs/order_page/order_page_bloc.dart';
 import 'package:refgo_courier/blocs/service_db/service_db_bloc.dart';
+import 'package:refgo_courier/domain/order.dart';
 import 'package:refgo_courier/pages/ibox_settings_page.dart';
 import 'package:refgo_courier/pages/main_page.dart';
 import 'package:refgo_courier/pages/network_settings_page.dart';
@@ -17,6 +18,8 @@ import 'package:refgo_courier/pages/yandex_map_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(OrderAdapter());
+  Hive.registerAdapter(StatusAdapter());
   runApp(const MyApp());
 }
 

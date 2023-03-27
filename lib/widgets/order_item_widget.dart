@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 import 'package:refgo_courier/blocs/order_page/order_page_bloc.dart';
-import 'package:refgo_courier/enums.dart';
+import 'package:refgo_courier/domain/order.dart';
+
 
 class OrderItemWidget extends StatelessWidget {
   String uid;
@@ -36,7 +36,7 @@ class OrderItemWidget extends StatelessWidget {
         child: Row(
           children: [
             //Text(uid),
-            status == Status.inway
+            status == Status.on_way
                 ? const Icon(Icons.car_crash_outlined)
                 : const Icon(Icons.done),
             const SizedBox(

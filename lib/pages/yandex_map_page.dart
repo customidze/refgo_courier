@@ -235,7 +235,7 @@ class _YandexMapPageState extends State<YandexMapPage> {
     setState(() {
       follow_me = false;
       mapObjects.addAll(placemarks);
-      widget.result.routes!.asMap().forEach((i, route) {
+      widget.result.routes?.asMap().forEach((i, route) {
         mapObjects.add(PolylineMapObject(
           mapId: MapObjectId('route_${i}_polyline'),
           polyline: Polyline(points: route.geometry),
