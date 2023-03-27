@@ -68,9 +68,9 @@ class _YandexMapPageState extends State<YandexMapPage> {
               mapObjects: mapObjects,
               onMapCreated: _onMapCreated,
             ),
-            follow_me
-                ? const Center(child: Icon(Icons.add_location_sharp))
-                : const SizedBox()
+            // follow_me
+            //     ? const Center(child: Icon(Icons.add_location_sharp))
+            //     : const SizedBox()
           ],
         ),
       ),
@@ -154,7 +154,20 @@ class _YandexMapPageState extends State<YandexMapPage> {
                     latitude: position.latitude,
                     longitude: position.longitude))))
         .then((value) {
+      //add user position
+      PlacemarkMapObject mark1 = PlacemarkMapObject(
+          icon: PlacemarkIcon.single(PlacemarkIconStyle(
+              image: BitmapDescriptor.fromAssetImage('assets/user.png'),
+              scale: 1)),
+          isDraggable: true,
+          mapId: const MapObjectId('me'),
+          point: Point(
+              latitude: position.latitude, longitude: position.longitude));
+
       setState(() {
+        mapObjects.add(mark1);
+        //add user position^^^^^
+
         follow_me = true;
       });
     });
@@ -162,24 +175,46 @@ class _YandexMapPageState extends State<YandexMapPage> {
 
   void cameraLL() async {
     Position positionL = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
     YandexMapController controllerL = await _completer.future;
-    controllerL.moveCamera(
-        animation: const MapAnimation(duration: 1),
-        CameraUpdate.newCameraPosition(CameraPosition(
-            zoom: 13,
-            target: Point(
-                latitude: positionL.latitude,
-                longitude: positionL.longitude)))).then((value) {
-                     setState(() {
-                  follow_me = true;  
-                });
-                });
+
+    // PlacemarkMapObject mark1 = PlacemarkMapObject(
+    //     icon: PlacemarkIcon.single(PlacemarkIconStyle(
+    //         image: BitmapDescriptor.fromAssetImage('assets/user.png'),
+    //         scale: 1)),
+    //     isDraggable: true,
+    //     mapId: const MapObjectId('me'),
+    //     point: Point(
+    //         latitude: positionL.latitude, longitude: positionL.longitude));
+
+    // mapObjects.add(mark1);
+
+    controllerL
+        .moveCamera(
+            animation: const MapAnimation(duration: 1),
+            CameraUpdate.newCameraPosition(CameraPosition(
+                zoom: 13,
+                target: Point(
+                    latitude: positionL.latitude,
+                    longitude: positionL.longitude))))
+        .then((value) {
+      mapObjects.add(PlacemarkMapObject(
+          icon: PlacemarkIcon.single(PlacemarkIconStyle(
+              image: BitmapDescriptor.fromAssetImage('assets/user.png'),
+              scale: 1)),
+          mapId: MapObjectId('me'),
+          point: Point(
+              latitude: positionL.latitude, longitude: positionL.longitude)));
+
+      setState(() {
+        follow_me = true;
+      });
+    });
   }
 
   void showAllMarkers() async {
     Position positionL = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
 
     YandexMapController controllerL = await _completer.future;
     var test = await controllerL.getVisibleRegion();
@@ -254,7 +289,7 @@ class _YandexMapPageState extends State<YandexMapPage> {
 
   void createMarkers() async {
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
     PlacemarkMapObject mark1 = PlacemarkMapObject(
         icon: PlacemarkIcon.single(PlacemarkIconStyle(
             image: BitmapDescriptor.fromAssetImage('assets/route_end.png'),
@@ -286,7 +321,7 @@ class _YandexMapPageState extends State<YandexMapPage> {
       return;
     } else {
       final position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+          desiredAccuracy: LocationAccuracy.bestForNavigation);
       // print("latitude = ${position.latitude}");
       // print("longitude= ${position.longitude}");
     }

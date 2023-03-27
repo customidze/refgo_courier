@@ -137,9 +137,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
 
   saveOrders(DateTime dtKey) async {
     var boxOrders = await Hive.openBox('Orders');
-    boxOrders.put(
-        '${dtKey.day}-${dtKey.month}-${dtKey.year}',
-        listOrder);
+    boxOrders.put('${dtKey.day}-${dtKey.month}-${dtKey.year}', listOrder);
   }
 
   _getOrdersFromDB(DateTime dtKey) async {
@@ -150,9 +148,8 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
       listOrder = listOrderDynamic.cast<Order>();
 
       emit(GetOrdersState(listOrder: listOrder!));
-    }else{
+    } else {
       emit(GetOrdersState(listOrder: const []));
     }
-
   }
 }

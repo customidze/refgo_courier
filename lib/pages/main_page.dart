@@ -39,8 +39,8 @@ class MainPage extends StatelessWidget {
                     return;
                   } else {
                     dt = pickedDate;
-                    BlocProvider.of<MainPageBloc>(context).add(SetDateEvent(
-                        date: pickedDate ));
+                    BlocProvider.of<MainPageBloc>(context)
+                        .add(SetDateEvent(date: pickedDate));
                   }
                 });
               },
@@ -89,12 +89,12 @@ class MainPage extends StatelessWidget {
                 : false,
             builder: (context, state) {
               if (state is GetOrdersState || state is OnWillPopState) {
-                if(state.listOrder.isEmpty){
+                if (state.listOrder.isEmpty) {
                   const Center(
-                  child: SizedBox(
-                    child: Text('Нет заказов...'),
-                  ),
-                );
+                    child: SizedBox(
+                      child: Text('Нет заказов...'),
+                    ),
+                  );
                 }
                 markers = List.generate(
                     state.listOrder.length,
@@ -131,50 +131,56 @@ class MainPage extends StatelessWidget {
             },
           ),
           bottomNavigationBar: BottomAppBar(
-            height: 60,
+            height: 80,
             child: Container(
               decoration: const BoxDecoration(
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    offset: Offset(0, -1),
-                    color: Colors.grey,
-                    blurRadius: 3,
+                  // boxShadow: <BoxShadow>[
+                  //   BoxShadow(
+                  //     offset: Offset(0, -1),
+                  //     color: Colors.white,
+                  //     blurRadius: 3,
+                  //   ),
+                  // ],
                   ),
-                ],
-              ),
               child: Column(
                 children: [
                   Container(
                     height: 20,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.amber,
-                    child: Text('Наличные:'),
+                    //color: Colors.amber,
+                    child: const Text('Наличные:'),
                   ),
                   Container(
                     height: 20,
                     width: MediaQuery.of(context).size.width,
-                    color: Colors.blue,
-                    child: Text('Безналичные:'),
+                    //color: Colors.blue,
+                    child: const Text('Безналичные:'),
                   ),
                   Row(
                     children: [
                       Container(
-                        height: 20,
+                        padding: const EdgeInsets.all(1),
+                        height: 40,
                         width: MediaQuery.of(context).size.width * 0.5,
-                        color: Colors.amber,
-                        child: Text('Закрыть смену'),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Закрыть смену'),
+                        ),
                       ),
-                      InkWell(
+                      Container(
+                        padding: const EdgeInsets.all(1),
                         //hoverColor: Colors.black,
-                        onTap: () {
-                          Navigator.pushNamed(context, '/map',
-                              arguments: markers);
-                        },
-                        child: Container(
-                          height: 20,
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          color: Colors.white,
-                          child: const Text('Карта'),
+                        height: 40,
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/map',
+                                arguments: markers);
+                          },
+
+                          // width: MediaQuery.of(context).size.width * 0.5,
+                          // color: Colors.white,
+                          child: const Center(child: Text('Карта')),
                         ),
                       ),
                     ],
