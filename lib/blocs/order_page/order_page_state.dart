@@ -1,15 +1,23 @@
 part of 'order_page_bloc.dart';
 
 @immutable
-abstract class OrderPageState {}
+abstract class OrderPageState {
+  get top => null;
 
-class OrderPageInitial extends OrderPageState {
-  
-  
+  get lb => null;
 }
 
-class SetStatusState extends OrderPageState{
-  Status status;
+class OrderPageInitial extends OrderPageState {
+  List<bool> lb = [true, false];
+}
+
+class SetStatusState extends OrderPageState {
+  final Status status;
 
   SetStatusState({required this.status});
+}
+
+class SetTypeOfPaymentsState extends OrderPageState {
+  final List<bool> lb;
+  SetTypeOfPaymentsState({required this.lb});
 }

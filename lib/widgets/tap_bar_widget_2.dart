@@ -45,56 +45,66 @@ class _TapBarWidget2State extends State<TapBarWidget2>
           height: 300,
           child: TabBarView(controller: _tabController, children: [
             Container(
-                color: Colors.amber,
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                    border: Border.all(color: Colors.grey)),
+                //color: Colors.amber,
                 child: Column(
                   children: [
                     Row(
                       children: [
                         const Text('Получатель'),
-                        SizedBox(
+                        const SizedBox(
                           width: 7,
                         ),
-                        Text('Maris'),
+                        Text(widget.order.recepientFIO),
                       ],
                     ),
+                    const Divider(),
                     Row(
                       children: [
-                        Text('Конт. лицо'),
-                        SizedBox(
+                        const Text('Конт. лицо'),
+                        const SizedBox(
                           width: 13,
                         ),
                         Flexible(
                             fit: FlexFit.loose,
                             child: Text(
-                              'Конт. лицоy456456456455345345345ertert43534rtwert54654t45t45t45t',
+                              widget.order.customerContactPerson,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
                             )),
                       ],
                     ),
+                    const Divider(),
                     Row(
                       children: [
-                        Text('Телефон'),
-                        SizedBox(
+                        const Text('Телефон'),
+                        const SizedBox(
                           width: 28,
                         ),
-                        Text('89161999984'),
-                        IconButton(
-                            onPressed: () {
-                              _makePhoneCall('89161999984');
-                            },
-                            icon: Icon(Icons.ring_volume_sharp)),
-                        IconButton(
-                            onPressed: () {
-                              _makeSmsSend('89161999984');
-                            },
-                            icon: Icon(Icons.sms))
+                        Text(widget.order.customerTel),
+                        widget.order.customerTel != ''
+                            ? IconButton(
+                                onPressed: () {
+                                  _makePhoneCall(widget.order.customerTel);
+                                },
+                                icon: const Icon(Icons.call_end_rounded,color: Colors.green,))
+                            : const SizedBox(),
+                        widget.order.customerTel != ''
+                            ? IconButton(
+                                onPressed: () {
+                                  _makeSmsSend(widget.order.customerTel);
+                                },
+                                icon: const Icon(Icons.sms,color:Colors.green,))
+                            : const SizedBox(),
                       ],
                     ),
+                    const Divider(),
                     Row(
                       children: [
-                        Text('Адрес'),
-                        SizedBox(
+                        const Text('Адрес'),
+                        const SizedBox(
                           width: 43,
                         ),
                         Flexible(
@@ -106,22 +116,43 @@ class _TapBarWidget2State extends State<TapBarWidget2>
                             )),
                       ],
                     ),
+                    const Divider(),
                     Row(
                       children: [
-                        Text('Время'),
-                        SizedBox(
+                        const Text('Время'),
+                        const SizedBox(
                           width: 41,
                         ),
-                        Text('89161999984'),
+                        Row(
+                          //crossAxisAlignment: CrossAxisAlignment.end,
+                          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                                '${widget.order.windowStart.hour}:${widget.order.windowStart.minute}'),
+                            const Text('  -  '),
+                            Text(
+                                '${widget.order.windowEnd.hour}:${widget.order.windowEnd.minute}'),
+                            const Text('                  '),
+                            Text(
+                                '${widget.order.deliveryDate.day}.${widget.order.deliveryDate.month}.${widget.order.deliveryDate.year}'),
+                          ],
+                        ),
                       ],
                     ),
+                    const Divider(),
                     Row(
                       children: [
-                        Text('Примечание'),
-                        SizedBox(
+                        const Text('Примечание'),
+                        const SizedBox(
                           width: 1,
                         ),
-                        Text('89161999984'),
+                        Flexible(
+                            fit: FlexFit.loose,
+                            child: Text(
+                              widget.order.note,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            )),
                       ],
                     ),
                   ],

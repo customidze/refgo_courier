@@ -13,6 +13,7 @@ import 'package:refgo_courier/widgets/tap_bar_widget_2.dart';
 class OrderPage extends StatelessWidget {
   Order? order;
   OrderPage({super.key});
+  //List<bool> isSelectedTypeOfPayments = [true, false];
 
   final List<String> items = Status.values.map((e) => e.name).toList();
 
@@ -85,6 +86,60 @@ class OrderPage extends StatelessWidget {
             //TapBarCustom(),
             TapBarWidget2(
               order: order,
+            ),
+            Row(
+              children: [
+                const Text('Предоплачен'),
+                const SizedBox(
+                  width: 5,
+                ),
+                order.prepaid
+                    ? const Icon(
+                        Icons.task_alt_outlined,
+                        color: Colors.green,
+                      )
+                    : const Icon(
+                        Icons.disabled_by_default_sharp,
+                        color: Colors.red,
+                      ),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Text('Мест 0')
+              ],
+            ),
+            Row(
+              children: [
+                BlocBuilder<OrderPageBloc, OrderPageState>(
+                  buildWhen: (previous, current) => previous.top != current.top?true:false,
+                  builder: (context, state) {
+                  
+                    return ToggleButtons(
+                        borderRadius: BorderRadius.circular(10),
+                        onPressed: (index) {
+                          if(index == 0){
+                            BlocProvider.of<OrderPageBloc>(context).add(SetTypeOfPaymentsEvent(top: TypeOfPayment.cash));
+                          }else{
+                            BlocProvider.of<OrderPageBloc>(context).add(SetTypeOfPaymentsEvent(top: TypeOfPayment.cashless));
+                          }
+                          
+                        },
+                        //color: Colors.blue,
+                        selectedColor: Colors.black,
+                        children: const [
+                          Text(
+                            'Наличные',
+                            //style: TextStyle(fontSize: 18)
+                          ),
+                          Text(
+                            'Безналичные',
+                            //style: TextStyle(fontSize: 18)
+                          ),
+                        ],
+                        isSelected: state.lb);
+                  },
+                )
+              ],
             )
           ],
         ),
@@ -98,7 +153,8 @@ class OrderPage extends StatelessWidget {
                   BlocProvider.of<OrderPageBloc>(context)
                       .add(SetStatusEvent(status: newstatus));
                 }
-                BlocProvider.of<MainPageBloc>(context).saveOrders(order.deliveryDate);
+                BlocProvider.of<MainPageBloc>(context)
+                    .saveOrders(order.deliveryDate);
                 BlocProvider.of<MainPageBloc>(context).add(OnWillPopEvent());
                 Navigator.pop(context, true);
               },

@@ -7,3 +7,8 @@ class SetStatusEvent extends OrderPageEvent {
   Status status;
   SetStatusEvent({required this.status});
 }
+
+class SetTypeOfPaymentsEvent extends OrderPageEvent {
+  final TypeOfPayment top;
+  SetTypeOfPaymentsEvent({required this.top});
+}

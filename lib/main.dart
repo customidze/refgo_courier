@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:refgo_courier/blocs/ibox_settings/ibox_settings_bloc.dart';
 import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 import 'package:refgo_courier/blocs/network_settings/networksettings_bloc.dart';
@@ -47,6 +48,14 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ru', 'RU'),
+        ],
+        locale: const Locale('ru'),
         title: 'RefGo courier',
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,

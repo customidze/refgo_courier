@@ -52,10 +52,6 @@ class Order {
   bool accompanyingDoc;
 
   //String cost;
-
-
-
-
   
   Order(
       {required this.uidReport,
@@ -127,4 +123,11 @@ enum Status {
   in_place_no_connection,
   @HiveField(12)
   planned
+}
+@HiveType(typeId: 2)
+enum TypeOfPayment{
+  @HiveField(0)
+  cash,
+  @HiveField(1)
+  cashless
 }
