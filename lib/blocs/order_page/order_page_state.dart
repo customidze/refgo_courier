@@ -8,7 +8,7 @@ abstract class OrderPageState {
 }
 
 class OrderPageInitial extends OrderPageState {
-  List<bool> lb = [true, false];
+  final List<bool> lb = [true, false];
 }
 
 class SetStatusState extends OrderPageState {

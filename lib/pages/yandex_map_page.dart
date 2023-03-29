@@ -11,6 +11,9 @@ import 'package:geolocator/geolocator.dart';
 class YandexMapPage extends StatefulWidget {
   late DrivingSessionResult result;
   late DrivingSession session;
+  static double zoom = 13;
+
+  YandexMapPage({super.key});
   // late final PlacemarkMapObject startPlacemark;
   // late final PlacemarkMapObject endPlacemark;
 
@@ -24,6 +27,7 @@ class _YandexMapPageState extends State<YandexMapPage> {
 
   final List<DrivingSessionResult> results = [];
   bool follow_me = false;
+  double zoomInState = 13;
 
   @override
   void initState() {
@@ -58,6 +62,8 @@ class _YandexMapPageState extends State<YandexMapPage> {
               // },
               onCameraPositionChanged: (cameraPosition, reason, finished) {
                 //print(7896314);
+                YandexMapPage.zoom = cameraPosition.zoom;
+
                 if (reason.name == 'gestures') {
                   setState(() {
                     follow_me = false;
@@ -130,11 +136,14 @@ class _YandexMapPageState extends State<YandexMapPage> {
       locationSettings: const LocationSettings(
     accuracy: LocationAccuracy.high,
     distanceFilter: 1,
+
     //timeLimit: Duration(seconds: 3)
   )).listen((Position? position) {
+    //var tt= zoomInState;
     if (position != null) {
       CameraUpdate.newCameraPosition(CameraPosition(
-          zoom: 13,
+          zoom: YandexMapPage.zoom,
+          //zoom: widget.zoom,
           target: Point(
               latitude: position.latitude, longitude: position.longitude)));
     }
@@ -188,12 +197,13 @@ class _YandexMapPageState extends State<YandexMapPage> {
     //         latitude: positionL.latitude, longitude: positionL.longitude));
 
     // mapObjects.add(mark1);
+    //var zoom = controllerL.getUserCameraPosition().
 
     controllerL
         .moveCamera(
             animation: const MapAnimation(duration: 1),
             CameraUpdate.newCameraPosition(CameraPosition(
-                zoom: 13,
+                zoom: YandexMapPage.zoom,
                 target: Point(
                     latitude: positionL.latitude,
                     longitude: positionL.longitude))))

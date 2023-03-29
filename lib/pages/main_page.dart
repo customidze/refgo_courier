@@ -30,7 +30,7 @@ class MainPage extends StatelessWidget {
             title: GestureDetector(
               onTap: () {
                 showDatePicker(
-                        //locale: const Locale('ru', 'RU'),
+                        locale: const Locale('ru', 'RU'),
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(DateTime.now().year - 1),

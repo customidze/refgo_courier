@@ -111,32 +111,40 @@ class OrderPage extends StatelessWidget {
             Row(
               children: [
                 BlocBuilder<OrderPageBloc, OrderPageState>(
-                  buildWhen: (previous, current) => previous.top != current.top?true:false,
+                  buildWhen: (previous, current) =>
+                      !listEquals<bool>(previous.lb, current.lb),
+                  //previous.lb != current.lb ? true : false,
                   builder: (context, state) {
-                  
-                    return ToggleButtons(
-                        borderRadius: BorderRadius.circular(10),
-                        onPressed: (index) {
-                          if(index == 0){
-                            BlocProvider.of<OrderPageBloc>(context).add(SetTypeOfPaymentsEvent(top: TypeOfPayment.cash));
-                          }else{
-                            BlocProvider.of<OrderPageBloc>(context).add(SetTypeOfPaymentsEvent(top: TypeOfPayment.cashless));
-                          }
-                          
-                        },
-                        //color: Colors.blue,
-                        selectedColor: Colors.black,
-                        children: const [
-                          Text(
-                            'Наличные',
-                            //style: TextStyle(fontSize: 18)
-                          ),
-                          Text(
-                            'Безналичные',
-                            //style: TextStyle(fontSize: 18)
-                          ),
-                        ],
-                        isSelected: state.lb);
+                    return SizedBox(
+                      height: 30,
+                      child: ToggleButtons(
+                          borderRadius: BorderRadius.circular(10),
+                          onPressed: (index) {
+                            if (index == 0) {
+                              BlocProvider.of<OrderPageBloc>(context).add(
+                                  SetTypeOfPaymentsEvent(
+                                      top: TypeOfPayment.cash));
+                            } else {
+                              BlocProvider.of<OrderPageBloc>(context).add(
+                                  SetTypeOfPaymentsEvent(
+                                      top: TypeOfPayment.cashless));
+                            }
+                          },
+                          //color: Colors.blue,
+                          fillColor: Colors.green,
+                          //selectedColor: const Color.fromARGB(255, 146, 54, 54),
+                          children: const [
+                            Text(
+                              'Наличные',
+                              //style: TextStyle(fontSize: 18)
+                            ),
+                            Text(
+                              'Безналичные',
+                              //style: TextStyle(fontSize: 18)
+                            ),
+                          ],
+                          isSelected: state.lb),
+                    );
                   },
                 )
               ],

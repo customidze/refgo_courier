@@ -52,10 +52,10 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('ru', 'RU'),
-        ],
-        locale: const Locale('ru'),
+        // supportedLocales: const [
+        //   Locale('ru', 'RU'),
+        // ],
+        //locale: const Locale('ru'),
         title: 'RefGo courier',
         theme: ThemeData(
           primarySwatch: Colors.blueGrey,
