@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 import 'package:refgo_courier/blocs/order_page/order_page_bloc.dart';
 import 'package:refgo_courier/domain/order.dart';
+import 'package:refgo_courier/widgets/expansion_goods.dart';
 //import 'package:refgo_courier/widgets/progress_indicator.dart';
 //import 'package:refgo_courier/widgets/tap_bar_custom.dart';
 import 'package:refgo_courier/widgets/tap_bar_widget_2.dart';
@@ -38,7 +39,7 @@ class OrderPage extends StatelessWidget {
             },
           ),
         ),
-        body: Column(
+        body: ListView(
           children: [
             Row(
               children: [
@@ -108,6 +109,7 @@ class OrderPage extends StatelessWidget {
                 const Text('Мест 0')
               ],
             ),
+            ExpansionGoodsWidget(),
             Row(
               children: [
                 BlocBuilder<OrderPageBloc, OrderPageState>(
@@ -132,6 +134,7 @@ class OrderPage extends StatelessWidget {
                           },
                           //color: Colors.blue,
                           fillColor: Colors.green,
+                          isSelected: state.lb,
                           //selectedColor: const Color.fromARGB(255, 146, 54, 54),
                           children: const [
                             Text(
@@ -142,13 +145,15 @@ class OrderPage extends StatelessWidget {
                               'Безналичные',
                               //style: TextStyle(fontSize: 18)
                             ),
-                          ],
-                          isSelected: state.lb),
+                          ]),
                     );
                   },
-                )
+                ),
+                IconButton(onPressed: (){}, icon: const Icon(Icons.receipt)),
               ],
-            )
+            ),
+            //buildExpansionPanel('name'),
+            
           ],
         ),
         bottomNavigationBar: SizedBox(
@@ -167,8 +172,13 @@ class OrderPage extends StatelessWidget {
                 Navigator.pop(context, true);
               },
               child: const Text('Готово')),
+              
         ),
       ),
     );
   }
 }
+
+
+
+ 
