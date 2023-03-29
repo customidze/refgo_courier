@@ -14,9 +14,17 @@ class ServiceDbBloc extends Bloc<ServiceDbEvent, ServiceDbState> {
     on<ClearAllDataEvent>((event, emit) {
       _deleteAllData();
     });
+    on<ClearOrdersEvent>((event, emit) {
+      _deleteOrders();
+    });
   }
-  _deleteAllData()async{
+  _deleteAllData() async {
     await Hive.close();
     Hive.deleteFromDisk();
+  }
+
+  _deleteOrders() async {
+    await Hive.deleteBoxFromDisk('Orders');
+    //boxOrders.clear();
   }
 }

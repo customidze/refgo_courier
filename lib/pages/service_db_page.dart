@@ -57,7 +57,32 @@ class ServiceDbPage extends StatelessWidget {
                   },
                   child: const Text('Очистить')),
             ],
-          )
+          ),
+          ElevatedButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: const Text('Вы уверены?'),
+                        actions: [
+                          ElevatedButton(
+                              onPressed: () {
+                                BlocProvider.of<ServiceDbBloc>(context)
+                                    .add(ClearOrdersEvent());
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Да')),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Нет'))
+                        ],
+                      );
+                    });
+              },
+              child: const Text('Очистить заказы')),
         ],
       ),
     );

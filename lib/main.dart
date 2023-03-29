@@ -21,6 +21,7 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(OrderAdapter());
   Hive.registerAdapter(StatusAdapter());
+  Hive.registerAdapter(GoodAdapter());
   runApp(const MyApp());
 }
 

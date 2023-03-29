@@ -38,13 +38,14 @@ class OrderAdapter extends TypeAdapter<Order> {
       note: fields[18] as String,
       tempRegime: fields[19] as String,
       accompanyingDoc: fields[20] as bool,
+      listGoods: (fields[21] as List).cast<Good>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Order obj) {
     writer
-      ..writeByte(21)
+      ..writeByte(22)
       ..writeByte(0)
       ..write(obj.uidReport)
       ..writeByte(1)
@@ -86,7 +87,9 @@ class OrderAdapter extends TypeAdapter<Order> {
       ..writeByte(19)
       ..write(obj.tempRegime)
       ..writeByte(20)
-      ..write(obj.accompanyingDoc);
+      ..write(obj.accompanyingDoc)
+      ..writeByte(21)
+      ..write(obj.listGoods);
   }
 
   @override
@@ -96,6 +99,58 @@ class OrderAdapter extends TypeAdapter<Order> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is OrderAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class GoodAdapter extends TypeAdapter<Good> {
+  @override
+  final int typeId = 3;
+
+  @override
+  Good read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Good(
+      nimber: fields[0] as String,
+      code: fields[1] as String,
+      name: fields[2] as String,
+      art: fields[3] as String,
+      barcode: fields[4] as String,
+      count: fields[5] as num,
+      price: fields[6] as num,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Good obj) {
+    writer
+      ..writeByte(7)
+      ..writeByte(0)
+      ..write(obj.nimber)
+      ..writeByte(1)
+      ..write(obj.code)
+      ..writeByte(2)
+      ..write(obj.name)
+      ..writeByte(3)
+      ..write(obj.art)
+      ..writeByte(4)
+      ..write(obj.barcode)
+      ..writeByte(5)
+      ..write(obj.count)
+      ..writeByte(6)
+      ..write(obj.price);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GoodAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -190,6 +245,45 @@ class StatusAdapter extends TypeAdapter<Status> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is StatusAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class TypeOfPaymentAdapter extends TypeAdapter<TypeOfPayment> {
+  @override
+  final int typeId = 2;
+
+  @override
+  TypeOfPayment read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return TypeOfPayment.cash;
+      case 1:
+        return TypeOfPayment.cashless;
+      default:
+        return TypeOfPayment.cash;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, TypeOfPayment obj) {
+    switch (obj) {
+      case TypeOfPayment.cash:
+        writer.writeByte(0);
+        break;
+      case TypeOfPayment.cashless:
+        writer.writeByte(1);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TypeOfPaymentAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

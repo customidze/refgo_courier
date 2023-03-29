@@ -86,36 +86,54 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
           emit(GetOrdersState(listOrder: const []));
           return;
         }
+        //var test = reportsList[0]['Заказы'][index]['Товары'].length;
 
         listOrder = List.generate(reportsList[0]['Заказы'].length, (index) {
           return Order(
-            uidReport: reportsList[0]['Заказы'][index]['УИДОтчета'],
-            uid: reportsList[0]['Заказы'][index]['УИДДокументаДоставки'],
-            nimber: reportsList[0]['Заказы'][index]['Номер'],
-            address: reportsList[0]['Заказы'][index]['АдресДоставки'],
-            status: Status.on_way,
-            lat: reportsList[0]['Заказы'][index]['Долгота'],
-            long: reportsList[0]['Заказы'][index]['Широта'],
-            invoice: reportsList[0]['Заказы'][index]['НомерНакладной'],
-            inInvoice: reportsList[0]['Заказы'][index]['ВхНакладная'],
-            recepientFIO: reportsList[0]['Заказы'][index]['ФИОПолучателя'],
-            customer: reportsList[0]['Заказы'][index]['Заказчик'],
-            customerContactPerson: reportsList[0]['Заказы'][index]
-                ['ЗаказчикКонтактноеЛицо'],
-            customerTel: reportsList[0]['Заказы'][index]['ЗаказчикТелефон'],
-            prepaid: reportsList[0]['Заказы'][index]['Предоплачен'],
-            windowStart:
-                DateTime.parse(reportsList[0]['Заказы'][index]['ВремяС']),
-            windowEnd:
-                DateTime.parse(reportsList[0]['Заказы'][index]['ВремяПо']),
-            deliveryDate:
-                DateTime.parse(reportsList[0]['Заказы'][index]['ДатаДоставки']),
-            comment: reportsList[0]['Заказы'][index]['Комментарий'],
-            note: reportsList[0]['Заказы'][index]['Примечание'],
-            tempRegime: reportsList[0]['Заказы'][index]['ТемпературныйРежим'],
-            accompanyingDoc: reportsList[0]['Заказы'][index]
-                ['СопроводительнаяДокументация'],
-          );
+              uidReport: reportsList[0]['Заказы'][index]['УИДОтчета'],
+              uid: reportsList[0]['Заказы'][index]['УИДДокументаДоставки'],
+              nimber: reportsList[0]['Заказы'][index]['Номер'],
+              address: reportsList[0]['Заказы'][index]['АдресДоставки'],
+              status: Status.on_way,
+              lat: reportsList[0]['Заказы'][index]['Долгота'],
+              long: reportsList[0]['Заказы'][index]['Широта'],
+              invoice: reportsList[0]['Заказы'][index]['НомерНакладной'],
+              inInvoice: reportsList[0]['Заказы'][index]['ВхНакладная'],
+              recepientFIO: reportsList[0]['Заказы'][index]['ФИОПолучателя'],
+              customer: reportsList[0]['Заказы'][index]['Заказчик'],
+              customerContactPerson: reportsList[0]['Заказы'][index]
+                  ['ЗаказчикКонтактноеЛицо'],
+              customerTel: reportsList[0]['Заказы'][index]['ЗаказчикТелефон'],
+              prepaid: reportsList[0]['Заказы'][index]['Предоплачен'],
+              windowStart:
+                  DateTime.parse(reportsList[0]['Заказы'][index]['ВремяС']),
+              windowEnd:
+                  DateTime.parse(reportsList[0]['Заказы'][index]['ВремяПо']),
+              deliveryDate: DateTime.parse(
+                  reportsList[0]['Заказы'][index]['ДатаДоставки']),
+              comment: reportsList[0]['Заказы'][index]['Комментарий'],
+              note: reportsList[0]['Заказы'][index]['Примечание'],
+              tempRegime: reportsList[0]['Заказы'][index]['ТемпературныйРежим'],
+              accompanyingDoc: reportsList[0]['Заказы'][index]
+                  ['СопроводительнаяДокументация'],
+              //listOrder: ...reportsList[0]['Заказы']['Товары']
+              listGoods: List.generate(
+                  reportsList[0]['Заказы'][index]['Товары'].length, (ind) {
+                return Good(
+                    nimber: reportsList[0]['Заказы'][index]['Товары'][ind]
+                        ['Номер'],
+                    code: reportsList[0]['Заказы'][index]['Товары'][ind]['Код'],
+                    name: reportsList[0]['Заказы'][index]['Товары'][ind]
+                        ['Наименование'],
+                    art: reportsList[0]['Заказы'][index]['Товары'][ind]
+                        ['Артикул'],
+                    barcode: reportsList[0]['Заказы'][index]['Товары'][ind]
+                        ['Штрихкод'],
+                    count: reportsList[0]['Заказы'][index]['Товары'][ind]
+                        ['Количество'],
+                    price: reportsList[0]['Заказы'][index]['Товары'][ind]
+                        ['Цена']);
+              }).toList());
         }).toList();
         emit(GetOrdersState(listOrder: listOrder!));
 

@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
-
 part 'order.g.dart';
+
 @HiveType(typeId: 0)
 class Order {
   @HiveField(0)
@@ -50,9 +50,11 @@ class Order {
   String tempRegime;
   @HiveField(20)
   bool accompanyingDoc;
+  @HiveField(21)
+  List<Good> listGoods;
 
   //String cost;
-  
+
   Order(
       {required this.uidReport,
       required this.uid,
@@ -74,16 +76,25 @@ class Order {
       required this.comment,
       required this.note,
       required this.tempRegime,
-      required this.accompanyingDoc});
+      required this.accompanyingDoc,
+      required this.listGoods});
 }
 
+@HiveType(typeId: 3)
 class Good {
+  @HiveField(0)
   String nimber;
+  @HiveField(1)
   String code;
+  @HiveField(2)
   String name;
+  @HiveField(3)
   String art;
+  @HiveField(4)
   String barcode;
+  @HiveField(5)
   num count;
+  @HiveField(6)
   num price;
   Good(
       {required this.nimber,
@@ -124,8 +135,9 @@ enum Status {
   @HiveField(12)
   planned
 }
+
 @HiveType(typeId: 2)
-enum TypeOfPayment{
+enum TypeOfPayment {
   @HiveField(0)
   cash,
   @HiveField(1)
