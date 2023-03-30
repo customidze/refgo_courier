@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
 import 'package:refgo_courier/blocs/order_page/order_page_bloc.dart';
 import 'package:refgo_courier/domain/order.dart';
+import 'package:refgo_courier/widgets/expansion_digital_check.dart';
 import 'package:refgo_courier/widgets/expansion_goods.dart';
 //import 'package:refgo_courier/widgets/progress_indicator.dart';
 //import 'package:refgo_courier/widgets/tap_bar_custom.dart';
@@ -17,6 +18,18 @@ class OrderPage extends StatelessWidget {
   //List<bool> isSelectedTypeOfPayments = [true, false];
 
   final List<String> items = Status.values.map((e) => e.name).toList();
+  final List<String> itemsRus = [
+    'В пути',
+    'Назначен',
+    'Частично доставлен',
+    'Доставлен',
+    'Отмена',
+    'Отказ',
+    'В пути(не дозвонился)',
+    'На месте(не дозвонился)',
+    ''
+    //'Не известный статус'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -57,15 +70,33 @@ class OrderPage extends StatelessWidget {
                   builder: (context, state) {
                     Status st =
                         BlocProvider.of<OrderPageBloc>(context).order!.status;
+                    String stRus;
+                    if (st == Status.on_way) {
+                      stRus = 'В пути';
+                    } else if (st == Status.assigned) {
+                      stRus = 'Назначен';
+                    } else if (st == Status.delivered) {
+                      stRus = 'Частично доставлен';
+                    } else if (st == Status.part_delivered) {
+                      stRus = 'Доставлен';
+                    } else if (st == Status.canceled) {
+                      stRus = 'Отмена';
+                    } else if (st == Status.returned) {
+                      stRus = 'Отказ';
+                    } else if (st == Status.on_way_no_connection) {
+                      stRus = 'В пути(не дозвонился)';
+                    } else if (st == Status.in_place_no_connection) {
+                      stRus = 'На месте(не дозвонился)';
+                    } else {
+                      stRus = '';
+                    }
 
                     return DropdownButtonHideUnderline(
-                    
                         child: DropdownButton2(
-                          
                       hint: const Text(
                         'Select Item',
                       ),
-                      items: items
+                      items: itemsRus
                           .map((item) => DropdownMenuItem<String>(
                                 value: item,
                                 child: Text(
@@ -73,13 +104,33 @@ class OrderPage extends StatelessWidget {
                                 ),
                               ))
                           .toList(),
-                      value: describeEnum(st),
+                      //value: describeEnum(st),
+                      value: stRus,
                       onChanged: (value) {
-                        Status newstatus = Status.values.byName(value!);
-                        BlocProvider.of<OrderPageBloc>(context)
-                            .add(SetStatusEvent(status: newstatus));
-                    
-                        selectedValue = value;
+                        Status? newstatus;
+
+                        if (value == 'В пути') {
+                          newstatus = Status.on_way;
+                        } else if (value == 'Назначен') {
+                          newstatus = Status.assigned;
+                        } else if (value == 'Доставлен') {
+                          newstatus = Status.delivered;
+                        } else if (value == 'Частично доставлен') {
+                          newstatus = Status.part_delivered;
+                        } else if (value == 'Отмена') {
+                          newstatus = Status.canceled;
+                        } else if (value == 'Отказ') {
+                          newstatus = Status.returned;
+                        } else if (value == 'В пути(не дозвонился)') {
+                          newstatus = Status.on_way_no_connection;
+                        } else if (value == 'На месте(не дозвонился)') {
+                          newstatus = Status.in_place_no_connection;
+                        }
+                        if (newstatus != null) {
+                          BlocProvider.of<OrderPageBloc>(context)
+                              .add(SetStatusEvent(status: newstatus));
+                          selectedValue = value;
+                        }
                       },
                     ));
                   },
@@ -116,7 +167,7 @@ class OrderPage extends StatelessWidget {
               children: [
                 BlocBuilder<OrderPageBloc, OrderPageState>(
                   buildWhen: (previous, current) =>
-                      current is SetTypeOfPaymentsState?true:false,
+                      current is SetTypeOfPaymentsState ? true : false,
                   //previous.lb != current.lb ? true : false,
                   builder: (context, state) {
                     return SizedBox(
@@ -151,11 +202,16 @@ class OrderPage extends StatelessWidget {
                     );
                   },
                 ),
-                IconButton(onPressed: (){}, icon: const Icon(Icons.receipt)),
+                IconButton(onPressed: () {}, icon: const Icon(Icons.receipt)),
               ],
             ),
+            ExpansionDidgitalCheckWidget(
+              phone: order.customerTel,
+            ),
+            Row(children: [Text('Услуги')]),
+            Row(children: [Text('К оплате(НП)')]),
+            Row(children: [Text('Принято')])
             //buildExpansionPanel('name'),
-            
           ],
         ),
         bottomNavigationBar: SizedBox(
@@ -174,13 +230,8 @@ class OrderPage extends StatelessWidget {
                 Navigator.pop(context, true);
               },
               child: const Text('Готово')),
-              
         ),
       ),
     );
   }
 }
-
-
-
- 

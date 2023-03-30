@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:refgo_courier/domain/order.dart';
 
-class ExpansionGoodsWidget extends StatefulWidget {
-  const ExpansionGoodsWidget({super.key, required this.phone});
- final String phone;
+class ExpansionDidgitalCheckWidget extends StatefulWidget {
+  const ExpansionDidgitalCheckWidget({super.key, required this.phone});
+  final String phone;
 
   @override
-  State<ExpansionGoodsWidget> createState() => _ExpansionGoodsWidgetState();
+  State<ExpansionDidgitalCheckWidget> createState() =>
+      _ExpansionDidgitalCheckWidgetState();
 }
 
-class _ExpansionGoodsWidgetState extends State<ExpansionGoodsWidget> {
+class _ExpansionDidgitalCheckWidgetState
+    extends State<ExpansionDidgitalCheckWidget> {
   final List<Item> _items = <Item>[Item(title: 'title', body: 'body')];
-  TextEditingController tec = TextEditingController(text: widget.phone);
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController tecEmail = TextEditingController(text: widget.phone);
+    TextEditingController tecPhone = TextEditingController(text: widget.phone);
+
     return ExpansionPanelList(
       children: _items.map((Item item) {
         return ExpansionPanel(
@@ -23,10 +27,53 @@ class _ExpansionGoodsWidgetState extends State<ExpansionGoodsWidget> {
               return const Center(child: Text('Эл. чек'));
             },
             body: Column(
-              children: [const Text('Email'),Row(children: [
-                Text('Phone'),
-                TextField(controller: ,),
-              ],)],
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const Text('Email'),
+                    const SizedBox(
+                      width: 9,
+                    ),
+                    SizedBox(
+                      width: 180,
+                      height: 40,
+                      child: TextField(
+                        decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                          onPressed: () {
+                            tecEmail.text = '';
+                          },
+                          icon: const Icon(Icons.clear),
+                        )),
+                        controller: tecEmail,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text('Phone'),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    SizedBox(
+                      width: 180,
+                      height: 40,
+                      child: TextField(
+                        decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                          onPressed: () {
+                            tecPhone.text = '';
+                          },
+                          icon: const Icon(Icons.clear),
+                        )),
+                        controller: tecPhone,
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ));
       }).toList(),
       expansionCallback: (int index, bool isExpanded) {
