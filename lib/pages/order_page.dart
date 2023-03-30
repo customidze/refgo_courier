@@ -59,7 +59,9 @@ class OrderPage extends StatelessWidget {
                         BlocProvider.of<OrderPageBloc>(context).order!.status;
 
                     return DropdownButtonHideUnderline(
+                    
                         child: DropdownButton2(
+                          
                       hint: const Text(
                         'Select Item',
                       ),
@@ -73,10 +75,10 @@ class OrderPage extends StatelessWidget {
                           .toList(),
                       value: describeEnum(st),
                       onChanged: (value) {
-                        // Status newstatus = Status.values.byName(value!);
-                        // BlocProvider.of<OrderPageBloc>(context)
-                        //     .add(SetStatusEvent(status: newstatus));
-
+                        Status newstatus = Status.values.byName(value!);
+                        BlocProvider.of<OrderPageBloc>(context)
+                            .add(SetStatusEvent(status: newstatus));
+                    
                         selectedValue = value;
                       },
                     ));
@@ -109,12 +111,12 @@ class OrderPage extends StatelessWidget {
                 const Text('Мест 0')
               ],
             ),
-            ExpansionGoodsWidget(),
+            ExpansionGoodsWidget(listGoods: order.listGoods),
             Row(
               children: [
                 BlocBuilder<OrderPageBloc, OrderPageState>(
                   buildWhen: (previous, current) =>
-                      !listEquals<bool>(previous.lb, current.lb),
+                      current is SetTypeOfPaymentsState?true:false,
                   //previous.lb != current.lb ? true : false,
                   builder: (context, state) {
                     return SizedBox(

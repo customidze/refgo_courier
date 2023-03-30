@@ -84,6 +84,7 @@ class _TapBarWidget2State extends State<TapBarWidget2>
                           width: 28,
                         ),
                         Text(widget.order.customerTel),
+                        const SizedBox(width: 60,),
                         widget.order.customerTel != ''
                             ? IconButton(
                                 onPressed: () {

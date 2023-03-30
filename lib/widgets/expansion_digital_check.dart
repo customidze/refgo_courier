@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:refgo_courier/domain/order.dart';
 
 class ExpansionGoodsWidget extends StatefulWidget {
-  const ExpansionGoodsWidget({super.key, required this.listGoods});
-  final List<Good> listGoods;
+  const ExpansionGoodsWidget({super.key, required this.phone});
+ final String phone;
 
   @override
   State<ExpansionGoodsWidget> createState() => _ExpansionGoodsWidgetState();
@@ -11,6 +11,7 @@ class ExpansionGoodsWidget extends StatefulWidget {
 
 class _ExpansionGoodsWidgetState extends State<ExpansionGoodsWidget> {
   final List<Item> _items = <Item>[Item(title: 'title', body: 'body')];
+  TextEditingController tec = TextEditingController(text: widget.phone);
 
   @override
   Widget build(BuildContext context) {
@@ -19,27 +20,13 @@ class _ExpansionGoodsWidgetState extends State<ExpansionGoodsWidget> {
         return ExpansionPanel(
             isExpanded: item.isExpanded,
             headerBuilder: (BuildContext context, bool isExpanded) {
-              return const Center(child: Text('Грузы'));
+              return const Center(child: Text('Эл. чек'));
             },
             body: Column(
-              children: List.generate(widget.listGoods.length, (index) {
-                return Row(
-                  children: [
-                    Text((index + 1).toString()),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(widget.listGoods[index].name),
-                        Text(
-                            '${widget.listGoods[index].art}, ${widget.listGoods[index].barcode}')
-                      ],
-                    )
-                  ],
-                );
-              }).toList(),
+              children: [const Text('Email'),Row(children: [
+                Text('Phone'),
+                TextField(controller: ,),
+              ],)],
             ));
       }).toList(),
       expansionCallback: (int index, bool isExpanded) {
