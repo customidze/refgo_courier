@@ -297,26 +297,26 @@ class _YandexMapPageState extends State<YandexMapPage> {
     });
   }
 
-  void createMarkers() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.bestForNavigation);
-    PlacemarkMapObject mark1 = PlacemarkMapObject(
-        icon: PlacemarkIcon.single(PlacemarkIconStyle(
-            image: BitmapDescriptor.fromAssetImage('assets/route_end.png'),
-            scale: 1)),
-        isDraggable: true,
-        mapId: const MapObjectId('serp'),
-        point:
-            Point(latitude: position.latitude, longitude: position.longitude));
+  // void createMarkers() async {
+  //   Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.bestForNavigation);
+  //   PlacemarkMapObject mark1 = PlacemarkMapObject(
+  //       icon: PlacemarkIcon.single(PlacemarkIconStyle(
+  //           image: BitmapDescriptor.fromAssetImage('assets/route_end.png'),
+  //           scale: 1)),
+  //       isDraggable: true,
+  //       mapId: const MapObjectId('serp'),
+  //       point:
+  //           Point(latitude: position.latitude, longitude: position.longitude));
 
-    setState(() {
-      if (mapObjects.isNotEmpty) {
-        mapObjects.clear();
-      } else {
-        mapObjects.add(mark1);
-      }
-    });
-  }
+  //   setState(() {
+  //     if (mapObjects.isNotEmpty) {
+  //       mapObjects.clear();
+  //     } else {
+  //       mapObjects.add(mark1);
+  //     }
+  //   });
+  // }
 
   static _getLocation() async {
     LocationPermission permission = await Geolocator.checkPermission();

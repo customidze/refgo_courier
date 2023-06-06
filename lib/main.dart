@@ -22,6 +22,7 @@ void main() async {
   Hive.registerAdapter(OrderAdapter());
   Hive.registerAdapter(StatusAdapter());
   Hive.registerAdapter(GoodAdapter());
+  
   runApp(const MyApp());
 }
 

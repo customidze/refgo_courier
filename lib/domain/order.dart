@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 
 part 'order.g.dart';
 
+
 @HiveType(typeId: 0)
-class Order {
+class Order{
   @HiveField(0)
   String uidReport;
   @HiveField(1)
@@ -52,6 +55,8 @@ class Order {
   bool accompanyingDoc;
   @HiveField(21)
   List<Good> listGoods;
+  @HiveField(22)
+  int lateArrival;
 
   //String cost;
 
@@ -77,10 +82,56 @@ class Order {
       required this.note,
       required this.tempRegime,
       required this.accompanyingDoc,
-      required this.listGoods});
+      required this.listGoods,
+      required this.lateArrival
+      });
+
+  sendToServer(Map dataForConn) async {
+    String addrServer = dataForConn['ctrlAddrServer'];
+    String userName = dataForConn['ctrlUserName'];
+    String passwd = dataForConn['ctrlPasswd'];
+    String id = dataForConn['ctrlId'];
+
+    DateTime lateDT = DateTime(1);
+
+    Duration duration = Duration(seconds: lateArrival);
+    DateTime late = lateDT.add(duration);
+    //0000-01-01T00:30:00.000
+    //"Опоздание":"0001-01-01T00:30:52"
+    String lateString = late.toIso8601String().substring(0, late.toIso8601String().length -4);
+
+    String jsonStringBody = '''{'НомерОтчета':'0001','УИДОтчета':$uidReport,'Заказы':[{НомерОтчета':'0001','УИДОтчета':$uidReport,
+      'УИДДокументаДоставки':$uid,'ЭтоЗаказ':'true','Номер':$nimber,'СтатусЗаказа':${status.name},'Опоздание':$lateString
+    }]}''';
+
+
+    String result = '';
+    String basicAuth =
+        'Basic ' + base64Encode(utf8.encode('$userName:$passwd'));
+    var url =
+        Uri.http(addrServer, 'tms/hs/es-mobile/SendDeliveryReport', {'id': id});
+
+    final response = await http.post(url,
+        //body: '{login:$userName,password:$passwd}',
+        body: jsonStringBody,
+        headers: <String, String>{'authorization': basicAuth}).then((response) {
+      //print(response.statusCode);
+
+      print(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        //saveSettingsInBD(addrServer, userName, passwd);
+        //BlocProvider.of<MainPageBloc>(context).add(GetOrdersEvent());
+        print(utf8.decode(response.bodyBytes));
+        result = response.statusCode.toString();
+      } else {
+        result = response.statusCode.toString();
+      }
+    });
+  }
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 1)
 class Good {
   @HiveField(0)
   String nimber;
@@ -106,7 +157,7 @@ class Good {
       required this.price});
 }
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 2)
 enum Status {
   @HiveField(0)
   registered,
@@ -136,10 +187,11 @@ enum Status {
   planned
 }
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 3)
 enum TypeOfPayment {
   @HiveField(0)
   cash,
   @HiveField(1)
   cashless
 }
+

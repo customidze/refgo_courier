@@ -1,5 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:refgo_courier/blocs/main_page/main_page_bloc.dart';
@@ -10,6 +10,7 @@ import 'package:refgo_courier/widgets/expansion_goods.dart';
 //import 'package:refgo_courier/widgets/progress_indicator.dart';
 //import 'package:refgo_courier/widgets/tap_bar_custom.dart';
 import 'package:refgo_courier/widgets/tap_bar_widget_2.dart';
+import 'package:duration_picker/duration_picker.dart';
 
 // ignore: must_be_immutable
 class OrderPage extends StatelessWidget {
@@ -27,12 +28,17 @@ class OrderPage extends StatelessWidget {
     'Отказ',
     'В пути(не дозвонился)',
     'На месте(не дозвонился)',
-    ''
+    //''
     //'Не известный статус'
   ];
+  //TimeOfDay late = TimeOfDay(hour: 0, minute: 0);
 
   @override
   Widget build(BuildContext context) {
+    Duration late = Duration(
+        seconds: BlocProvider.of<OrderPageBloc>(context).order!.lateArrival);
+    var blcOrder = BlocProvider.of<OrderPageBloc>(context).order!;
+
     Future<bool> _onWillPop() async {
       //BlocProvider.of<MainPageBloc>(context).add(OnWillPopEvent());
       return true; //<-- SEE HERE
@@ -48,9 +54,48 @@ class OrderPage extends StatelessWidget {
           title: BlocBuilder<OrderPageBloc, OrderPageState>(
             builder: (context, state) {
               String? number = BlocProvider.of<OrderPageBloc>(context).number;
-              return Text('Заказ $number');
+              return Text(
+                'Заказ $number',
+                style: const TextStyle(fontSize: 18),
+              );
             },
           ),
+          actions: [
+            SizedBox(
+                width: 80,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      //showTimePicker(context: context, initialTime: late,);
+                      late = await showDurationPicker(
+                              context: context, initialTime: late) ??
+                          late;
+                      BlocProvider.of<OrderPageBloc>(context)
+                          .add(SetLateEvent(late: late));
+                    },
+                    child: BlocBuilder<OrderPageBloc, OrderPageState>(
+                      buildWhen: (previous, current) =>
+                          current is SetLateState ? true : false,
+                      builder: (context, state) {
+                        if (state is SetLateState ||
+                            //BlocProvider.of<OrderPageBloc>(context).order!.late != Duration.zero
+                            blcOrder.lateArrival != 0) {
+                          return Text(
+                            BlocProvider.of<OrderPageBloc>(context)
+                                .order!
+                                .lateArrival
+                                .toString()
+                                .replaceAll(':00.000000', ''),
+                            style: const TextStyle(fontSize: 15),
+                          );
+                        } else {
+                          return const Text(
+                            'Опоздание',
+                            style: TextStyle(fontSize: 9),
+                          );
+                        }
+                      },
+                    )))
+          ],
         ),
         body: ListView(
           children: [
@@ -187,7 +232,9 @@ class OrderPage extends StatelessWidget {
                           },
                           //color: Colors.blue,
                           fillColor: Colors.green,
-                          isSelected: state.lb,
+                          //isSelected: state.lb,
+                          isSelected:
+                              BlocProvider.of<OrderPageBloc>(context).top,
                           //selectedColor: const Color.fromARGB(255, 146, 54, 54),
                           children: const [
                             Text(
@@ -208,9 +255,9 @@ class OrderPage extends StatelessWidget {
             ExpansionDidgitalCheckWidget(
               phone: order.customerTel,
             ),
-            Row(children: [Text('Услуги')]),
-            Row(children: [Text('К оплате(НП)')]),
-            Row(children: [Text('Принято')])
+            Row(children: const [Text('Услуги')]),
+            Row(children: const [Text('К оплате(НП)')]),
+            Row(children: const [Text('Принято')])
             //buildExpansionPanel('name'),
           ],
         ),
@@ -220,12 +267,32 @@ class OrderPage extends StatelessWidget {
           child: ElevatedButton(
               onPressed: () {
                 if (selectedValue != null) {
-                  Status newstatus = Status.values.byName(selectedValue!);
-                  BlocProvider.of<OrderPageBloc>(context)
-                      .add(SetStatusEvent(status: newstatus));
+                  Status? newstatus;
+                  if (selectedValue == 'В пути') {
+                    newstatus = Status.on_way;
+                  } else if (selectedValue == 'Назначен') {
+                    newstatus = Status.assigned;
+                  } else if (selectedValue == 'Доставлен') {
+                    newstatus = Status.delivered;
+                  } else if (selectedValue == 'Частично доставлен') {
+                    newstatus = Status.part_delivered;
+                  } else if (selectedValue == 'Отмена') {
+                    newstatus = Status.canceled;
+                  } else if (selectedValue == 'Отказ') {
+                    newstatus = Status.returned;
+                  } else if (selectedValue == 'В пути(не дозвонился)') {
+                    newstatus = Status.on_way_no_connection;
+                  } else if (selectedValue == 'На месте(не дозвонился)') {
+                    BlocProvider.of<OrderPageBloc>(context)
+                        .add(SetStatusEvent(status: newstatus!));
+                  }
                 }
                 BlocProvider.of<MainPageBloc>(context)
-                    .saveOrders(order.deliveryDate);
+                    .saveOrders(DateTime.now());
+
+                BlocProvider.of<OrderPageBloc>(context)
+                    .add(SendDataToServerEvent());
+
                 BlocProvider.of<MainPageBloc>(context).add(OnWillPopEvent());
                 Navigator.pop(context, true);
               },

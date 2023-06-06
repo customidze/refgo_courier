@@ -116,6 +116,7 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
               tempRegime: reportsList[0]['Заказы'][index]['ТемпературныйРежим'],
               accompanyingDoc: reportsList[0]['Заказы'][index]
                   ['СопроводительнаяДокументация'],
+                  lateArrival: 0,
               //listOrder: ...reportsList[0]['Заказы']['Товары']
               listGoods: List.generate(
                   reportsList[0]['Заказы'][index]['Товары'].length, (ind) {
@@ -155,7 +156,10 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
 
   saveOrders(DateTime dtKey) async {
     var boxOrders = await Hive.openBox('Orders');
-    boxOrders.put('${dtKey.day}-${dtKey.month}-${dtKey.year}', listOrder);
+
+    //await boxOrders.delete('${dtKey.day}-${dtKey.month}-${dtKey.year}');
+
+    await boxOrders.put('${dtKey.day}-${dtKey.month}-${dtKey.year}', listOrder);
   }
 
   _getOrdersFromDB(DateTime dtKey) async {
@@ -164,6 +168,9 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
         await boxOrders.get('${dtKey.day}-${dtKey.month}-${dtKey.year}');
     if (listOrderDynamic != null) {
       listOrder = listOrderDynamic.cast<Order>();
+
+      //listOrder = listOrderDynamic as List<Order>;
+      //listOrder = List.generate(listOrderDynamic.length, (index) => Order(uidReport: uidReport, uid: uid, nimber: nimber, address: address, status: status, lat: lat, long: long, invoice: invoice, inInvoice: inInvoice, recepientFIO: recepientFIO, customer: customer, customerContactPerson: customerContactPerson, customerTel: customerTel, prepaid: prepaid, windowStart: windowStart, windowEnd: windowEnd, deliveryDate: deliveryDate, comment: comment, note: note, tempRegime: tempRegime, accompanyingDoc: accompanyingDoc, listGoods: listGoods, lateArrival: lateArrival))
 
       emit(GetOrdersState(listOrder: listOrder!));
     } else {

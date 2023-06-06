@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:refgo_courier/domain/order.dart';
+
 
 class ExpansionDidgitalCheckWidget extends StatefulWidget {
   const ExpansionDidgitalCheckWidget({super.key, required this.phone});

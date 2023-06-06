@@ -21,3 +21,8 @@ class SetTypeOfPaymentsState extends OrderPageState {
   final List<bool> lb;
   SetTypeOfPaymentsState({required this.lb});
 }
+
+class SetLateState extends OrderPageState{
+  final Duration late;
+  SetLateState({required this.late});
+}
